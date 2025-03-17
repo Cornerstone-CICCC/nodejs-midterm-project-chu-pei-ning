@@ -1,0 +1,23 @@
+---
+import Layout from "../layouts/Layout.astro";
+---
+
+<Layout>
+	<div class="login-register">
+		<a href="./login">Log in</a>
+		<a href="./register">Sing up</a>
+	</div>
+</Layout>
+
+<style>
+	.login-register {
+		display: flex;
+		justify-content: center;
+		gap: 80px;
+	}
+
+	a {
+		text-decoration: none;
+		font-size: 2rem;
+	}
+</style>
