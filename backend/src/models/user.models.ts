@@ -4,8 +4,8 @@ import bcrypt from "bcrypt"
 
 class UserModel {
   private users: User[] = [
-    { id: uuidv4(), username: 'amy', password: '12345', firstname: 'Amy', lastname: 'Lui' },
-    { id: uuidv4(), username: 'cindy', password: '54321', firstname: 'Cindy', lastname: 'Kuo' }
+    { id: uuidv4(), username: 'amy', password: '12345' },
+    { id: uuidv4(), username: 'cindy', password: '54321' }
   ]
 
   findAll() {
@@ -22,7 +22,22 @@ class UserModel {
     const user = this.users.find(u => u.username === username)
     if (!user) return false
     const isMatch: boolean = await bcrypt.compare(password, user.password)
+    
     if (!isMatch) return false
+    return user
+  }
+
+  async createUser(newuser: Omit<User, 'id'>) {
+    const { username, password } = newuser
+    const foundIndex = this.users.findIndex(u => u.username === username)
+    if (foundIndex !== -1) return false
+    const hashedPassword = await bcrypt.hash(password, 12)
+    const user = {
+      id: uuidv4(),
+      username,
+      password: hashedPassword
+    }
+    this.users.push(user)
     return user
   }
 }

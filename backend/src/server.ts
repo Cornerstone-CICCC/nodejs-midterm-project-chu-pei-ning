@@ -2,8 +2,10 @@ import express, { Request, Response } from 'express'
 import cookieSession from 'cookie-session'
 import cors from 'cors'
 import userRouter from './routes/user.routes'
+import dailyRouter from './routes/daily.routes'
 import dotenv from 'dotenv'
 import { error } from 'console'
+import diaryRouter from './routes/diary.routes'
 dotenv.config()
 
 // creat server
@@ -24,11 +26,12 @@ if (!SIGN_KEY || !ENCRYPT_KEY) {
 app.use(cookieSession({
   name: 'session',
   keys: [SIGN_KEY, ENCRYPT_KEY],
-  maxAge: 5 * 60 * 1000
 }))
 
 // routes
 app.use('/', userRouter)
+app.use('/daily', dailyRouter)
+app.use('/diary', diaryRouter)
 
 // 404 fallback
 app.use((req: Request, res: Response) => {

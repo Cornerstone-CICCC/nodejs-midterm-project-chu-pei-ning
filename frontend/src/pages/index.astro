@@ -1,23 +1,92 @@
 ---
 import Layout from "../layouts/Layout.astro";
+import "../scss/globle.scss"
 ---
 
 <Layout>
-	<div class="login-register">
-		<a href="./login">Log in</a>
-		<a href="./register">Sing up</a>
+	<div class="home-container">
+		<h1>Welcome to Journey ~</h1>
+		<h2>Enjoy your time ~</h2>
+		<button class="sing-btn">
+			<a id="start-btn" href="">Let's start</a>
+		</button>
 	</div>
+
 </Layout>
+<script>
+	const startBtn = document.querySelector('#start-btn') as HTMLAnchorElement
+  const checkCookie = async () => {
+    const res = await fetch(`http://localhost:4000/check-cookie`, {
+      method: "GET",
+      credentials: "include"
+    })
+		console.log(res.ok)
+    if (!res.ok) {
+      startBtn.href = "/sing"
+      return startBtn
+    }
+    startBtn.href = "/daily"
+    return startBtn
+  }
+
+	const render = async () => {
+    const data = await checkCookie()
+  }
+
+  render()
+</script>
 
 <style>
-	.login-register {
+	.home-container {
+		width: auto;
 		display: flex;
+		flex-direction: column;
+		justify-self: center;
+		text-align: center;
+		font-family: 'Dosis';
+		color: #590D22;
+		padding-top: 50px;
+		gap: 20px;
+
+	}
+
+	.sing-btn {
+		background: #C9184A;
+		border-radius: 6px;
+		box-sizing: border-box;
+		font-family: 'Dosis';
+		color: #fff;
+		cursor: pointer;
+		display: flex;
+		font-size: 1.5em;
+		font-weight: 900;
 		justify-content: center;
-		gap: 80px;
+		line-height: 33.4929px;
+		padding: .5em .5em;
+		transition: all .2s ease-in-out;
+		user-select: none;
+		-webkit-user-select: none;
+		touch-action: manipulation;
+		width: 100%;
+		word-break: break-word;
+		border: 0;
+	}
+
+	.sing-btn:active,
+	.sing-btn:focus {
+		border-bottom-style: none;
+		border-color: #dadada;
+		box-shadow: rgba(0, 0, 0, .3) 0 3px 3px inset;
+		outline: 0;
+	}
+
+	.sing-btn:hover {
+		border-bottom-style: none;
+		border-color: #dadada;
 	}
 
 	a {
-		text-decoration: none;
-		font-size: 2rem;
+		color: #dadada;
 	}
+
 </style>

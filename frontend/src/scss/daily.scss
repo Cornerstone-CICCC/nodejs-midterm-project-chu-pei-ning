@@ -1,0 +1,103 @@
+.daily-container {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-around;
+  gap: 250px;
+  margin: 50px 0;
+}
+
+.diary-container {
+  form {
+    width: 400px !important;
+    height: 600px !important;
+
+  }
+  .field {
+    display: flex;
+    flex-direction: column;
+    padding: 5px;
+  }
+
+  input, select {
+    height: 30px;
+    border: 0.5px solid #C9184A;
+  }
+
+  textarea {
+    border: none;
+    border: 0.5px solid #C9184A;
+  }
+}
+
+.edit-btn, .delete-btn {
+  width: 45px;
+  height: 20px;
+	border: 0;
+	font-family: 'Dosis';
+	cursor: pointer;
+	border-radius: 3px;
+	background-color: #FFB3C1;
+	color: #C9184A;
+}
+
+ #routine-btn {
+  width: 50px;
+  height: auto;
+	border: 0;
+	font-family: 'Dosis';
+	text-transform: uppercase;
+	cursor: pointer;
+	border-radius: 3px;
+	background-color: #C9184A;
+	color: #FFF0F3;
+}
+
+.routine-container {
+  text-align: center;
+	background: #FFF0F3;
+	width: 400px;
+	height: 600px;
+  overflow-y: scroll;
+	border-radius: 6px;
+	padding: 30px 20px 0 20px;
+	box-shadow: 0 10px 50px 0 rgba(0, 0, 0, 0.25);
+	box-sizing: border-box;
+
+  .add-routine {
+    display: flex;
+    flex-direction: row;
+    gap: 5px;
+    
+    
+    input {
+      border: none;
+      border-bottom: 1px solid #C9184A;
+      width: 80%;
+      background-color: #FFF0F3;
+    }
+  }
+
+  .routine-list-container {
+    display: flex;
+    flex-direction: column;
+    align-items: start;
+    gap: 8px;
+    padding-top: 10px;    
+
+    .r-container {
+      width: 100%;
+      display: flex;
+      flex-direction: row;
+      justify-content: space-between;
+    }
+  }
+}
+
+@media (max-width: 768px) {
+  .daily-container {
+    display: flex;
+    flex-direction: column;
+    padding: 5px;
+    gap: 700px;
+  }
+}

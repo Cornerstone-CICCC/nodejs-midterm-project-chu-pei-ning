@@ -1,8 +1,125 @@
+---
+import "../scss/globle.scss"
+---
 <header>
-  <h1>My Journey</h1>
-  <menu>
-    <li>Home</li>
-    <!-- login/logout -->
-    <li></li>
+  <h1>Journey</h1>
+  <button id="burger-menu">&#9776;</button>
+  <menu id="nav-menu">
+    <li><a href="/">Home</a></li>
+    <li id="login-item" style=""><a href="/sing">Login</a></li>
+    <li id="logout-item" style=""><a href="" id="logout">Logout</a></li>
+    <li id="diary" style=""><a href="/daily">Diary</a></li>
+    <li id="history"><a href="/history" >History</a></li>
   </menu>
 </header>
+
+<script>
+  const loginItem = document.querySelector("#login-item") as HTMLLIElement
+  const logoutItem = document.querySelector("#logout-item") as HTMLLIElement
+  const history = document.querySelector("#history") as HTMLLIElement
+  const diary = document.querySelector("#diary") as HTMLLIElement
+  const logout = document.querySelector("#logout") as HTMLAnchorElement;
+
+  async function checkAuthStatus() {
+    const res = await fetch('http://localhost:4000/check-cookie', {
+      method: "GET",
+      credentials: "include"
+    });
+    
+    if (!res.ok) {
+      logoutItem.style.display = "none";  // hide logout
+      history.style.display = "none" // hide history
+      diary.style.display = "none" // hide history
+      return [logoutItem, history, diary] 
+    } 
+    loginItem.style.display = "none";  // hide login
+    return loginItem
+  }
+
+
+  logout.addEventListener("click", async () => {
+    const res = await fetch('http://localhost:4000/logout', {
+      method: "GET",
+      credentials: "include"
+    })
+
+    window.location.href = "/";
+  })
+
+  checkAuthStatus()
+
+  // burger menu
+  const burgerMenu = document.querySelector("#burger-menu") as HTMLButtonElement;
+  const navMenu = document.querySelector("#nav-menu") as HTMLMenuElement;
+
+  burgerMenu.addEventListener("click", () => {
+    navMenu.classList.toggle("active")
+  });
+</script>
+
+<style>
+  header {
+    background-color: #C9184A;
+    margin: 0;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    padding: 30px 20px;
+  }
+
+  h1 {
+    margin: 0;
+    color: #FFF0F3;
+    font-family: 'Dosis'
+  }
+
+  menu {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    gap: 30px;
+  }
+
+  li {
+    list-style: none;
+  }
+
+  a {
+    color: #FFF0F3;
+  }
+
+  a:hover {
+    font-size:large ;
+  }
+
+  #burger-menu {
+    display: none;
+    font-size: 30px;
+    background: none;
+    border: none;
+    color: #FFF0F3;
+    cursor: pointer;
+  }
+
+  @media (max-width: 768px) {
+    menu {
+      display: none;
+      flex-direction: column;
+      position: absolute;
+      top: 70px;
+      right: 20px;
+      background: #C9184A;
+      padding: 15px;
+      border-radius: 8px;
+      z-index: 1;
+    }
+
+    menu.active {
+      display: flex;
+    }
+
+    #burger-menu {
+      display: block;
+    }
+  }
+</style>
