@@ -1,0 +1,106 @@
+---
+import { ACTION_ERROR_CODES } from "astro:actions";
+import Layout from "../layouts/Layout.astro";
+import "../scss/globle.scss";
+import "../scss/form.scss";
+---
+
+<Layout>
+  <div class="form-container">
+    <form class="signUp">
+      <h3>Create Your Account</h3>
+      <p>Join us !</p>
+      <input class="sing-input" id="newUsername" class="w100" type="text" placeholder="Insert UserName" name="newUsername" required autocomplete='off' />
+      <input class="sing-input" id="newUsername" type="password" placeholder="Insert Password" name="newPassword" required />
+      <input class="sing-input" type="password" placeholder="Verify Password" required />
+      <button class="form-btn sx log-in" type="button">Log In</button>
+      <button class="form-btn dx" type="button" id="sign-up-btn">Sign Up</button>
+    </form>
+    <form class="signIn">
+      <h3>Welcome</br>Back !</h3>
+			<p>Let's start !</p>
+      <input class="sing-input" type="text" placeholder="Insert UserName" name="username" autocomplete='off' required />
+      <input class="sing-input" type="password" placeholder="Insert Password" name="password" required />
+      <button class="form-btn sx back" type="button">Back</button>
+      <button class="form-btn dx" type="button" id="login-btn">Log In</button>
+    </form>
+		<p class="error"></p>
+  </div>
+</Layout>
+
+<script>
+	const singInForm = document.querySelector(".signIn") as HTMLFormElement
+	const singUpForm = document.querySelector(".signUp") as HTMLFormElement
+	const logInButn = document.querySelector("#login-btn") as HTMLButtonElement
+	const singUpBtn = document.querySelector("#sign-up-btn") as HTMLButtonElement
+	const usernameInput = singInForm.querySelector('input[name="username"]') as HTMLInputElement;
+  const passwordInput = singInForm.querySelector('input[name="password"]') as HTMLInputElement;
+	const usernameCreat = singUpForm.querySelector('input[name="newUsername"]') as HTMLInputElement;
+  const passwordCreat = singUpForm.querySelector('input[name="newPassword"]') as HTMLInputElement;
+	const errorMessage = document.querySelector('.error') as HTMLParagraphElement;	
+
+	// switch form animation
+	document.querySelector(".log-in")?.addEventListener("click", function() {
+		singInForm.classList.add("active-dx");
+		singUpForm.classList.add("inactive-sx");
+		singUpForm.classList.remove("active-sx");
+		singInForm.classList.remove("inactive-dx");
+	});
+
+	document.querySelector(".back")?.addEventListener("click", function() {
+		singUpForm.classList.add("active-sx");
+		singInForm.classList.add("inactive-dx");
+		singInForm.classList.remove("active-dx");
+		singUpForm.classList.remove("inactive-sx");
+	});
+
+	// login function
+	logInButn.addEventListener("click", async (e) => {
+    e.preventDefault();
+
+    const res = await fetch("http://localhost:4000/login", {
+      method: "POST",
+      credentials: "include",
+      headers: {"Content-Type" : "application/json"},
+      body: JSON.stringify({
+        username: usernameInput.value,
+        password: passwordInput.value
+      })
+    })
+
+    if(!res.ok) {
+      window.location.href = "/sing"
+      return;
+    }
+    window.location.href = "/daily"
+  })
+
+	// singup function
+	singUpBtn.addEventListener('click', async (e) => {
+    e.preventDefault();
+
+    const res = await fetch(`http://localhost:4000/signup`, {
+      method: "POST",
+      credentials: "include",
+      headers: {"Content-Type" : "application/json"},
+      body: JSON.stringify({
+        username: usernameCreat.value,
+        password: passwordCreat.value,
+      })
+    })
+
+    if(!res.ok) {
+      const data = await res.json();
+      errorMessage.innerHTML = data.message;
+      return
+    }
+		singInForm.classList.add("active-dx");
+		singUpForm.classList.add("inactive-sx");
+		singUpForm.classList.remove("active-sx");
+		singInForm.classList.remove("inactive-dx")
+  })
+
+</script>
+
+
+

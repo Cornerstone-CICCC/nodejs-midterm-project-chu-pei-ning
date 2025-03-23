@@ -1,0 +1,232 @@
+.form-container{
+	position:absolute;
+	width: auto;
+	height:auto;
+	top: calc(50% - 240px);
+	left: calc(50% - 160px);
+}
+
+form {
+	position: absolute;
+	text-align: center;
+	background: #FFF0F3;
+	width: 310px;
+	height: 470px;
+	border-radius: 6px;
+	padding: 30px 20px 0 20px;
+	box-shadow: 0 10px 50px 0 rgba(0, 0, 0, 0.25);
+	box-sizing: border-box;
+}
+
+p {
+	font-family: 'Roboto', sans-serif;
+	font-weight: 100;
+	text-transform: uppercase;
+	font-size: 12px;
+	color: #87613d;
+	margin-bottom: 40px;
+}
+
+p > span {
+	padding-top: 3px;
+	display: block;
+	font-weight: 400;
+	font-size: 9px;
+}
+
+h3 {
+	font-family: 'Dosis';
+	font-size: 35px;
+	text-transform: uppercase;
+	color: #87613d;
+	margin-bottom: 30px;
+}
+
+.sing-input {
+	background-color: #FFF0F3;
+}
+
+.sing-input,
+button{
+	outline: none !important; 
+}
+
+button.form-btn {
+	position: absolute;
+	width: 50%;
+	height: 60px;
+	bottom: 0;
+	border: 0;
+	font-family: 'Dosis';
+	font-size: 24px;
+	text-transform: uppercase;
+	cursor: pointer;
+}
+
+button.form-btn.sx {
+	left: 0;
+	border-radius: 0 0 0 6px;
+	background-color: rgba(255, 117, 143, 0.35);
+	color: rgb(255, 117, 143);
+	transition:all 0.3s linear;
+}
+
+button.form-btn.sx:hover {
+	background-color:rgba(255, 117, 143, 0.65);
+	color: #FFF0F3;
+}
+
+button.form-btn.sx.back {
+	background-color: rgba(255, 117, 143, 0.15);
+	transition:all 0.3s linear;
+}
+
+button.form-btn.sx.back:hover {
+	background-color: rgba(255, 117, 143, 0.35);
+}
+
+button.form-btn.dx {
+	right: 0;
+	border-radius: 0 0 6px 0;
+	background-color: #C9184A;
+	color: #FFF0F3;
+}
+
+.sing-input {
+	border: none;
+	border-bottom: 1px solid #C9184A;
+	width: 85%;
+	font-family: 'Roboto';
+	color: #C9184A;
+	text-align: center;
+	font-size: 21px;
+	font-weight:100;
+	margin-bottom:25px;
+}
+
+::-webkit-input-placeholder {
+   color: #FFB3C1;
+	font-family: 'Roboto';
+	font-weight:100;
+}
+
+:-moz-placeholder {
+   color: #FFB3C1;  
+	font-family: 'Roboto';
+	font-weight:100;
+}
+
+::-moz-placeholder {
+   color: #FFB3C1;  
+	font-family: 'Roboto';
+	font-weight:100;
+}
+
+:-ms-input-placeholder {  
+   color: #FFB3C1; 
+	font-family: 'Roboto';
+	font-weight:100;
+}
+
+.signIn .sing-input,
+.signUp .w100 {
+	width: 100%;
+}
+
+.signIn{
+		z-index: 1;
+		transform: perspective(100px) translate3d(100px, 0px, -30px);
+		opacity: 0.5;
+}
+
+.signUp {
+	z-index: 2;
+}
+
+.active-dx{
+	animation-name: foregrounding-dx;
+	animation-duration: 0.9s;
+	animation-fill-mode: forwards;
+}
+
+.active-sx{
+	animation-name: foregrounding-sx;
+	animation-duration: 0.9s;
+	animation-fill-mode: forwards;
+}
+
+.inactive-dx{
+	animation-name: overshadowing-dx;
+	animation-duration: 0.9s;
+	animation-fill-mode: forwards;
+}
+
+.inactive-sx{
+	animation-name: overshadowing-sx;
+	animation-duration: 0.9s;
+	animation-fill-mode: forwards;
+}
+
+@keyframes overshadowing-dx {
+	0%{
+		z-index:2;
+		transform: perspective(100px) translate3d(0px, 0px, 0px);
+		opacity: 1;
+		box-shadow: 0 10px 50px 0 rgba(0, 0, 0, 0.25);
+	}
+	100%{
+		z-index: 1;
+		transform: perspective(100px) translate3d(100px, 0px, -30px);
+		opacity: 0.5;
+		box-shadow: 0 10px 20px 0 rgba(0, 0, 0, 0.25);
+	}
+}
+
+@keyframes overshadowing-sx {
+	0%{
+		z-index:2;
+		transform: perspective(100px) translate3d(0px, 0px, 0px);
+		opacity: 1;
+		box-shadow: 0 10px 50px 0 rgba(0, 0, 0, 0.25);
+	}
+	100%{
+		z-index: 1;
+		transform: perspective(100px) translate3d(-100px, 0px, -30px);
+		opacity: 0.5;
+		box-shadow: 0 10px 20px 0 rgba(0, 0, 0, 0.25);
+	}
+}
+
+@keyframes foregrounding-dx {
+	0%{
+		z-index:1;
+		transform: perspective(100px) translate3d(100px, 0px, -30px);
+		opacity: 0.5;
+	}
+	50%{
+		z-index:2;
+		transform: perspective(100px) translate3d(400px, 0px, -30px);
+	}
+	100%{
+		z-index:2;
+		transform: perspective(100px) translate3d(0px, 0px, 0px);
+		opacity: 1;
+	}
+}
+
+@keyframes foregrounding-sx {
+	0%{
+		z-index:1;
+		transform: perspective(100px) translate3d(-100px, 0px, -30px);
+		opacity: 0.5;
+	}
+	50%{
+		z-index:2;
+		transform: perspective(100px) translate3d(-400px, 0px, -30px);
+	}
+	100%{
+		z-index:2;
+		transform: perspective(100px) translate3d(0px, 0px, 0px);
+		opacity: 1;
+	}
+}

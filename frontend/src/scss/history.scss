@@ -1,0 +1,85 @@
+.history-page {
+  display: flex;
+  flex-direction: column;
+  text-align: center;
+  align-items: center;
+  padding-top: 30px;
+}
+
+#history-container {
+  display: flex;
+  height: 50vh;
+  gap: 20px;
+  justify-content: start;
+  margin: 30px;
+  padding: 30px;
+  border:  1px solid #C9184A;
+  max-width: 95%;
+  overflow-x: auto;
+}
+
+#history-container::-webkit-scrollbar {
+  display: none; // 隱藏滾動條（Chrome, Safari）
+}
+
+.diary-box {
+  background: #FFF0F3;
+  min-width: 300px; 
+  margin-right: 20px;
+	width: 310px;
+	height: 470px;
+	border-radius: 6px;
+	padding: 30px 20px 0 20px;
+	box-shadow: 0 10px 50px 0 rgba(0, 0, 0, 0.25);
+	box-sizing: border-box;
+  word-wrap: break-word;  /* 讓長單字換行 */
+  overflow-wrap: break-word; /* 確保內容在小螢幕時換行 */
+  white-space: normal; /* 允許自動換行 */
+}
+
+.d-container {
+  display: flex;
+  flex-direction: column;
+  text-align: start;
+  height: 300px;
+  margin: 30px;
+  gap: 10px;
+}
+
+.d-btn {
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  gap: 50px;
+}
+
+.edit-diary-btn, .delete-diary-btn {
+  width: 60px;
+  height: 30px;
+  border: 0;
+  font-family: 'Dosis';
+  cursor: pointer;
+  border-radius: 3px;
+  background-color: #FFB3C1;
+  color: #C9184A;
+}
+
+
+.back-btn {
+  background: #C9184A;
+  border-radius: 6px;
+  box-sizing: border-box;
+  display: flex;
+  font-size: 1.5em;
+  font-weight: 900;
+  justify-content: center;
+  padding: .5em .5em;
+  border: 0;
+  width: 100px;
+}
+
+.back-btn a {
+  color: #fff;
+  font-family: 'Dosis';
+  text-decoration: none;
+}

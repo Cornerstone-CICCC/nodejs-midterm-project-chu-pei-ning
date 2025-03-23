@@ -1,0 +1,235 @@
+---
+import Layout from "../layouts/Layout.astro";
+import "../scss/globle.scss"
+import "../scss/daily.scss"
+import "../scss/form.scss"
+---
+<Layout>
+  <div class="daily-container">
+    <div class="diary-container">
+      <form action="" class="diary-form">
+        <h3>Diary</h3>
+        <div class="field">
+          <label for="date">Data:</label>
+          <input type="date" name="date" id="date" required>
+        </div>
+        <div class="field">
+          <label for="weather">Weather:</label>
+          <select name="weather" id="weather">
+            <option value="Sunny ☀️">Sunny ☀️</option>
+            <option value="Rainy ☔️">Rainy ☔️</option>
+            <option value="Cloudy ☁️">Cloudy ☁️</option>
+            <option value="Windy 🌬️">Windy 🌬️</option>
+        </select>
+        </div>
+        <div class="field">
+          <label for="mood">Mood:</label>
+          <select name="mood" id="mood">
+            <option value="Supper Happy 😁">Supper happy 😁</option>
+            <option value="Happy 😊">Happy 😊</option>
+            <option value="Sad 😢">Sad 😢</option>
+            <option value="Supper Sad 😭">Supper sad 😭</option>
+            <option value="Mad 😡">Mad 😡</option>
+            <option value="Supper Mad 🤬">Supper mad 🤬</option>
+        </select>
+        </div>
+        <div class="field">
+          <label for="news">What's new today:</label>
+          <textarea name="message" id="message" rows="10" ></textarea>
+        </div>
+        <div class="field_button">
+          <button class="form-btn sx"type="reset">Reset</button>
+          <button class="form-btn dx" type="button" id="diary-btn">Submit</button>    
+      </div>
+      </form>
+    </div>
+    <div class="routine-container">
+      <h3>Routine</h3>
+      <div class="add-routine">
+        <input type="text" name="routine" required>
+        <button type="button" id="routine-btn">Add Routine</button>  
+      </div>
+      <div class="routine-list-container"></div>
+    </div>
+  </div>
+</Layout>
+
+<script>
+import type { date } from "astro:schema";
+
+  document.addEventListener("DOMContentLoaded", async () => {
+    await loadRoutines();
+  });
+
+  const routineBtn = document.querySelector('#routine-btn') as HTMLButtonElement
+  const routineContainer = document.querySelector(".routine-list-container") as HTMLElement
+  const routineInput = document.querySelector('input[name="routine"]') as HTMLInputElement
+
+  async function loadRoutines() {
+    try {
+      const res = await fetch("http://localhost:4000/daily")
+      if (!res.ok) throw new Error("Failed to fetch routines")
+      const data = await res.json()
+      
+      //clear old data
+      routineContainer.innerHTML = "" 
+
+      data.forEach((d: any) => {
+        routineContainer.innerHTML += `
+          <div class="r-container">
+            <div class="r-item">
+              <input class="routine-check" id="${d.id}" type="checkbox"/>
+              <label class="routine-text" for="${d.id}">${d.routine}</label>  
+            </div>
+            <div r-btn>
+              <button class="edit-btn" data-id="${d.id}" data-text="${d.routine}">Edit</button>
+              <button class="delete-btn" data-id="${d.id}" data-text="${d.routine}">Delete</button>
+            </div>
+          </div>
+        `
+      });
+      document.querySelectorAll(".edit-btn").forEach((btn) => {
+      btn.addEventListener("click", (event) => {
+        const target = event.target as HTMLButtonElement;
+        const id = target.getAttribute("data-id");
+        const text = target.getAttribute("data-text");
+        if (id) editRoutine(id, text);
+        });
+      });
+
+      document.querySelectorAll(".delete-btn").forEach((btn) => {
+      btn.addEventListener("click", (event) => {
+      const target = event.target as HTMLButtonElement;
+      const id = target.getAttribute("data-id")
+      const text = target.getAttribute("data-text");
+      if (id) deleteRoutine(id, text);
+      });
+    });
+    } catch (error) {
+      console.error("Error fetching routines:", error)
+    }
+  }
+
+  //add new routine
+  routineBtn.addEventListener("click", async (e) => {
+    e.preventDefault();
+    
+    if (!routineInput.value.trim()) {
+      alert("Routine cannot be empty!")
+      return;
+    }
+
+    try {
+      const res = await fetch("http://localhost:4000/daily/", {
+        method: "POST",
+        credentials: "include",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ routine: routineInput.value })
+      });
+
+      if (!res.ok) throw new Error("Server error");
+
+      await res.json();
+      routineInput.value = "";
+      await loadRoutines()
+    } catch (error) {
+      alert("Failed to add routine!")
+      console.error(error);
+    }
+  })
+
+  //update routine
+  async function editRoutine(id: string, currentText: string | null) {
+  const newRoutine = prompt("Edit routine:", currentText || "")
+  if (!newRoutine || newRoutine.trim() === currentText) return
+
+  try {
+    const res = await fetch(`http://localhost:4000/daily/${id}`, {
+      method: "PUT",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ routine: newRoutine })
+    });
+
+    if (!res.ok) throw new Error("Failed to update routine")
+    await loadRoutines()
+  } catch (error) {
+    alert("Failed to update routine!")
+    console.error(error)
+  }
+}
+
+// delete routine
+async function deleteRoutine(id: string, currentText: string | null) {
+  const confirmDelete = confirm(`Are you sure you want to delete "${currentText}"?`)
+  if (!confirmDelete) return;
+
+  try {
+    const res = await fetch(`http://localhost:4000/daily/${id}`, {
+      method: "DELETE"
+    });
+
+    if (!res.ok) throw new Error("Failed to delete routine")
+
+    await loadRoutines()
+  } catch (error) {
+    alert("Failed to delete routine!")
+    console.error(error);
+  }
+}
+
+  const diaryBtn = document.querySelector('#diary-btn') as HTMLButtonElement
+  const diaryForm = document.querySelector('.diary-form') as HTMLFormElement
+  const diaryDateInput = document.querySelector('input[name="date"]') as HTMLInputElement;
+  const diaryWeatherInput = document.querySelector('select[name="weather"]') as HTMLSelectElement;
+  const diaryMoodrInput = document.querySelector('select[name="mood"]') as HTMLSelectElement;
+  const diaryMessageInput = document.querySelector('textarea[name="message"]') as HTMLTextAreaElement;
+
+
+  document.addEventListener("DOMContentLoaded", async () => {
+    await loadDiaries();
+  });
+
+  async function loadDiaries() {
+    try {
+      const res = await fetch("http://localhost:4000/diary");
+      if (!res.ok) throw new Error("Failed to fetch diaries");
+      const data = await res.json();
+      
+
+    } catch (error) {
+      console.error("Error fetching diaries:", error);
+    }
+  }
+
+  //add new diary
+  diaryBtn.addEventListener("click", async (e) => {
+    e.preventDefault();
+
+    try {
+      const res = await fetch("http://localhost:4000/diary/", {
+        method: "POST",
+        credentials: "include",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ 
+          date: diaryDateInput.value,
+          mood: diaryMoodrInput.value,
+          weather: diaryWeatherInput.value,
+          content: diaryMessageInput.value
+        })
+      });
+
+      if (!res.ok) throw new Error("Server error");
+
+      await res.json();
+      diaryDateInput.value = ""
+      diaryMoodrInput.value = ""
+      diaryWeatherInput.value = ""
+      diaryMessageInput.value = ""
+      await loadDiaries()
+    } catch (error) {
+      alert("Failed to add diary!")
+      console.error(error);
+    }
+  })
+
+</script>
